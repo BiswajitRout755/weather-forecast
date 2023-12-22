@@ -1,0 +1,153 @@
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Weather Forecast</title>
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/css/styles.css">
+    <link href='https://fonts.googleapis.com/css?family=Oxygen:400,300,700'
+          rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Lora'
+          rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css" />
+<!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">-->
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+<!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
+</head>
+<body>
+    <!-- The tile and bar-->
+    <header>
+        <nav id ="header-nav" class = "navbar navbar-default">
+            <div class="container">
+                <div class = "navbar-header">
+                    <a class="pull-left visible-md visible-lg">
+                        <div id = "logo-img" alt="Logo image"></div>
+                    </a>
+                        <div class="navbar-brand">
+                            <h1>Weather Forecast</h1>
+                        </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <!-- The add city button -->
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-offset-4 is-4">
+                    <form method="POST">
+                        <div class="field has-addons">
+                            <div class="control is-expanded">
+                                <input class="input" name="city" type="text" placeholder="City Name">
+                            </div>
+                            <div class="control">
+                                <button class="button is-info">
+                                    Add City
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Alert image-->
+    <section>
+      {% with messages = get_flashed_messages(with_categories = true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+                {% set message_class = 'successAdd' %}
+                    {% if category == 'warning' %}
+                        {% set message_class = 'alert' %}
+                    {% endif%}
+                    {% if category == 'info' %}
+                        {% set message_class = 'info' %}
+                    {% endif%}
+                        <div class="{{message_class}}">
+                              <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                            <div>{{ message }}</div>
+                        </div>
+            {% endfor %}
+          {% endif %}
+      {% endwith %}
+    </section>
+
+    <!-- Display the cities-->
+    <section class="section">
+            <div class="container">
+                <div class = "columns">
+                        <div class="column is-6">
+                            {% for weather_data in weather_data_cities_first_half %}
+                            <div class="box">
+                                <article class="media">
+                                    <div class="media-left">
+                                        <figure class="image is-50x50">
+                                            <img src="http://openweathermap.org/img/w/{{ weather_data.Icon }}.png" alt="Image">
+                                        </figure>
+                                    </div>
+                                    <div class="media-content">
+                                        <div class="content">
+                                             <p>
+                                                 <span class="title">City: {{ weather_data.City }}</span><br>
+                                                 <span class="subtitle">Current Temperature {{ weather_data.Temperature }}° F</span><br>
+                                                 <span class="subtitle">Description: {{ weather_data.Description }}</span><br>
+                                                 <span class="subtitle">Max Temp: {{ weather_data.Temperature_Max}}° F</span><br>
+                                                 <span class="subtitle">Min Temp: {{ weather_data.Temperature_Min}}° F</span><br>
+                                                 <span class="subtitle">Humidity: {{ weather_data.Humidity}}%</span><br>
+                                                 <span class="subtitle">Pressure: {{ weather_data.Pressure}}hPa</span><br>
+                                                 <span class="subtitle">Wind Speed: {{ weather_data.Wind}}Km/hr</span><br>
+                                              </p>
+                                        </div>
+                                    </div>
+                                     <div class="media-right">
+                                              <a href="{{ url_for('delete_city', name = weather_data.City) }}">
+                                                 <button class="delete"></button>
+                                             </a>
+                                    </div>
+                                </article>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="column is-6">
+                            {% for weather_data in weather_data_cities_second_half %}
+                            <div class="box">
+                                <article class="media">
+                                    <div class="media-left">
+                                        <figure class="image is-50x50">
+                                            <img src="http://openweathermap.org/img/w/{{ weather_data.Icon }}.png" alt="Image">
+                                        </figure>
+                                    </div>
+                                    <div class="media-content">
+                                        <div class="content">
+                                             <p>
+                                                 <span class="title">City: {{ weather_data.City }}</span><br>
+                                                 <span class="subtitle">Current Temperature {{ weather_data.Temperature }}° F</span><br>
+                                                 <span class="subtitle">Description: {{ weather_data.Description }}</span><br>
+                                                 <span class="subtitle">Max Temp: {{ weather_data.Temperature_Max}}° F</span><br>
+                                                 <span class="subtitle">Min Temp: {{ weather_data.Temperature_Min}}° F</span><br>
+                                                 <span class="subtitle">Humidity: {{ weather_data.Humidity}}%</span><br>
+                                                 <span class="subtitle">Pressure: {{ weather_data.Pressure}}hPa</span><br>
+                                                 <span class="subtitle">Wind Speed: {{ weather_data.Wind}}Km/hr</span><br>
+                                              </p>
+                                        </div>
+                                    </div>
+                                     <div class="media-right">
+                                              <a href="{{ url_for('delete_city', name = weather_data.City) }}">
+                                                 <button class="delete"></button>
+                                             </a>
+                                    </div>
+                                </article>
+                            </div>
+                            {% endfor %}
+                        </div>
+                </div>
+            </div>
+        </section>
+
+
+</body>
+</html>
+{% endblock %}
